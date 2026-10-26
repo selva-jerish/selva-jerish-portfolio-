@@ -1,0 +1,422 @@
+@import "tailwindcss";
+
+/* Enable class-based dark mode (toggled by adding .dark to <html>) */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* ——————————————————————————————————————————
+   Design tokens
+   Palette: Deep-space dark with neon cyan / electric violet accents
+   Inspired by modern SaaS landing pages
+   Typefaces: Space Grotesk (headings) + DM Sans (body)
+   —————————————————————————————————————————— */
+
+@theme {
+  /* Primary accent — electric cyan */
+  --color-accent: #00d4ff;
+  --color-accent-light: #5ce5ff;
+  --color-accent-dark: #00a8cc;
+  --color-accent-muted: rgba(0, 212, 255, 0.08);
+
+  /* Secondary — electric violet / indigo */
+  --color-violet: #7c3aed;
+  --color-violet-light: #a78bfa;
+  --color-violet-dark: #5b21b6;
+
+  /* Surfaces */
+  --color-surface: #060b18;
+  --color-surface-elevated: #0c1229;
+  --color-card: #0f172a;
+  --color-card-hover: #131d3a;
+
+  /* Text */
+  --color-text-primary: #f0f4ff;
+  --color-text-secondary: #7b8bb2;
+  --color-text-muted: #4a5578;
+
+  /* Borders */
+  --color-border: #1e293b;
+  --color-border-glow: rgba(0, 212, 255, 0.15);
+
+  /* Glow colours */
+  --color-glow-cyan: rgba(0, 212, 255, 0.25);
+  --color-glow-violet: rgba(124, 58, 237, 0.25);
+}
+
+/* ——————————————————————————————————————————
+   Base layer: reset + global styles
+   —————————————————————————————————————————— */
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    font-family: 'DM Sans', system-ui, -apple-system, sans-serif;
+    background-color: var(--color-surface);
+    color: var(--color-text-primary);
+    overflow-x: hidden;
+  }
+
+  ::selection {
+    background-color: var(--color-accent);
+    color: var(--color-surface);
+  }
+}
+
+/* ——————————————————————————————————————————
+   Glassmorphism nav
+   —————————————————————————————————————————— */
+.glass-nav {
+  background: rgba(6, 11, 24, 0.65);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(30, 41, 59, 0.6);
+  box-shadow:
+    0 0 30px rgba(0, 212, 255, 0.05),
+    0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+/* ——————————————————————————————————————————
+   Glow card — used for project cards, contact items, etc.
+   —————————————————————————————————————————— */
+.glow-card {
+  background: linear-gradient(135deg, rgba(15, 23, 42, 0.8), rgba(12, 18, 41, 0.6));
+  border: 1px solid var(--color-border);
+  border-radius: 20px;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.glow-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 20px;
+  padding: 1px;
+  background: linear-gradient(135deg, rgba(0, 212, 255, 0.15), rgba(124, 58, 237, 0.15), transparent);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+.glow-card:hover::before {
+  opacity: 1;
+}
+
+.glow-card:hover {
+  border-color: rgba(0, 212, 255, 0.2);
+  box-shadow:
+    0 0 40px rgba(0, 212, 255, 0.08),
+    0 8px 32px rgba(0, 0, 0, 0.3);
+  transform: translateY(-4px);
+}
+
+/* ——————————————————————————————————————————
+   Gradient text
+   —————————————————————————————————————————— */
+.gradient-text {
+  background: linear-gradient(135deg, var(--color-accent), var(--color-violet-light));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.gradient-text-reverse {
+  background: linear-gradient(135deg, var(--color-violet-light), var(--color-accent));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ——————————————————————————————————————————
+   Primary CTA button
+   —————————————————————————————————————————— */
+.btn-primary {
+  background: linear-gradient(135deg, var(--color-accent), var(--color-violet));
+  color: white;
+  border: none;
+  padding: 12px 28px;
+  border-radius: 50px;
+  font-weight: 600;
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 0 20px rgba(0, 212, 255, 0.25), 0 0 60px rgba(0, 212, 255, 0.1);
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-primary::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, var(--color-accent-light), var(--color-violet-light));
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  border-radius: 50px;
+}
+
+.btn-primary:hover::before {
+  opacity: 1;
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 0 30px rgba(0, 212, 255, 0.4), 0 0 80px rgba(0, 212, 255, 0.15);
+}
+
+.btn-primary span {
+  position: relative;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Secondary outline button */
+.btn-secondary {
+  background: transparent;
+  color: var(--color-text-primary);
+  border: 1px solid var(--color-border);
+  padding: 12px 28px;
+  border-radius: 50px;
+  font-weight: 500;
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.btn-secondary:hover {
+  border-color: var(--color-accent);
+  color: var(--color-accent);
+  box-shadow: 0 0 20px rgba(0, 212, 255, 0.1);
+  transform: translateY(-2px);
+}
+
+/* ——————————————————————————————————————————
+   Section label pill
+   —————————————————————————————————————————— */
+.section-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 16px;
+  border-radius: 50px;
+  background: var(--color-accent-muted);
+  border: 1px solid rgba(0, 212, 255, 0.15);
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--color-accent);
+}
+
+/* ——————————————————————————————————————————
+   Volumetric background light effects
+   —————————————————————————————————————————— */
+.bg-glow-top {
+  position: fixed;
+  top: -200px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 800px;
+  height: 600px;
+  background: radial-gradient(ellipse at center, rgba(0, 212, 255, 0.08) 0%, rgba(124, 58, 237, 0.05) 40%, transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.bg-glow-bottom {
+  position: fixed;
+  bottom: -300px;
+  right: -200px;
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(ellipse at center, rgba(124, 58, 237, 0.06) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Star particles — small dot grid */
+.bg-stars {
+  position: fixed;
+  inset: 0;
+  background-image: radial-gradient(1px 1px at 20px 30px, rgba(255,255,255,0.08) 50%, transparent 0),
+                     radial-gradient(1px 1px at 40px 70px, rgba(255,255,255,0.06) 50%, transparent 0),
+                     radial-gradient(1px 1px at 50px 160px, rgba(255,255,255,0.05) 50%, transparent 0),
+                     radial-gradient(1px 1px at 90px 40px, rgba(255,255,255,0.07) 50%, transparent 0),
+                     radial-gradient(1px 1px at 130px 80px, rgba(255,255,255,0.04) 50%, transparent 0),
+                     radial-gradient(1px 1px at 160px 120px, rgba(255,255,255,0.06) 50%, transparent 0);
+  background-size: 200px 200px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ——————————————————————————————————————————
+   Subtle underline animation for links
+   —————————————————————————————————————————— */
+.link-underline {
+  position: relative;
+  display: inline-block;
+}
+
+.link-underline::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--color-accent), var(--color-violet));
+  transition: width 0.3s ease;
+}
+
+.link-underline:hover::after {
+  width: 100%;
+}
+
+/* Focus visible ring for keyboard users */
+*:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+/* Timeline connector line */
+.timeline-line {
+  position: relative;
+}
+
+.timeline-line::before {
+  content: '';
+  position: absolute;
+  left: 7px;
+  top: 28px;
+  bottom: 0;
+  width: 2px;
+  background: linear-gradient(to bottom, var(--color-accent), var(--color-violet), transparent);
+}
+
+/* ——————————————————————————————————————————
+   Stagger entrance animations
+   —————————————————————————————————————————— */
+@keyframes fadeSlideUp {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-up {
+  animation: fadeSlideUp 0.6s ease forwards;
+  opacity: 0;
+}
+
+.animation-delay-100 { animation-delay: 0.1s; }
+.animation-delay-200 { animation-delay: 0.2s; }
+.animation-delay-300 { animation-delay: 0.3s; }
+.animation-delay-400 { animation-delay: 0.4s; }
+.animation-delay-500 { animation-delay: 0.5s; }
+
+/* ——————————————————————————————————————————
+   Floating animation for decorative elements
+   —————————————————————————————————————————— */
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-20px); }
+}
+
+@keyframes floatSlow {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  50% { transform: translateY(-12px) rotate(3deg); }
+}
+
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+.animate-float-slow {
+  animation: floatSlow 8s ease-in-out infinite;
+}
+
+/* ——————————————————————————————————————————
+   Glow pulse for decorative orbs
+   —————————————————————————————————————————— */
+@keyframes glowPulse {
+  0%, 100% { opacity: 0.4; transform: scale(1); }
+  50% { opacity: 0.7; transform: scale(1.1); }
+}
+
+.animate-glow-pulse {
+  animation: glowPulse 4s ease-in-out infinite;
+}
+
+/* ——————————————————————————————————————————
+   Skill tag hover glow
+   —————————————————————————————————————————— */
+.skill-tag {
+  background: rgba(15, 23, 42, 0.6);
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+  padding: 8px 16px;
+  font-size: 0.875rem;
+  color: var(--color-text-primary);
+  transition: all 0.3s ease;
+  cursor: default;
+}
+
+.skill-tag:hover {
+  border-color: var(--color-accent);
+  color: var(--color-accent);
+  box-shadow: 0 0 15px rgba(0, 212, 255, 0.1);
+  background: rgba(0, 212, 255, 0.05);
+}
+
+/* ——————————————————————————————————————————
+   Contact card hover
+   —————————————————————————————————————————— */
+.contact-card {
+  background: rgba(15, 23, 42, 0.5);
+  border: 1px solid var(--color-border);
+  border-radius: 16px;
+  padding: 20px;
+  transition: all 0.3s ease;
+}
+
+.contact-card:hover {
+  border-color: rgba(0, 212, 255, 0.3);
+  background: rgba(15, 23, 42, 0.8);
+  box-shadow: 0 0 30px rgba(0, 212, 255, 0.08);
+  transform: translateX(-4px);
+}
+
+/* ——————————————————————————————————————————
+   Scrollbar styling
+   —————————————————————————————————————————— */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-surface);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-border);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-accent);
+}
