@@ -1,0 +1,132 @@
+@import "tailwindcss";
+
+/* Enable class-based dark mode (toggled by adding .dark to <html>) */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* ——————————————————————————————————————————
+   Design tokens
+   Palette: warm terracotta accent on a clean light base,
+   with a proper dark mode inversion.
+   Typefaces: Space Grotesk (headings) + DM Sans (body)
+   —————————————————————————————————————————— */
+
+@theme {
+  --color-terracotta: #c2654a;
+  --color-terracotta-light: #d4805e;
+  --color-terracotta-dark: #a34e35;
+  --color-terracotta-muted: #f0ddd6;
+
+  --color-surface-light: #faf8f5;
+  --color-surface-dark: #161210;
+  --color-card-light: #ffffff;
+  --color-card-dark: #1e1a17;
+  --color-text-primary-light: #1a1512;
+  --color-text-primary-dark: #f0ece8;
+  --color-text-secondary-light: #6b5e52;
+  --color-text-secondary-dark: #a89888;
+  --color-border-light: #e8e0d8;
+  --color-border-dark: #2e2822;
+}
+
+/* ——————————————————————————————————————————
+   Base layer: reset + global styles
+   —————————————————————————————————————————— */
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    font-family: 'DM Sans', system-ui, -apple-system, sans-serif;
+    background-color: var(--color-surface-light);
+    color: var(--color-text-primary-light);
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+
+  html.dark body,
+  .dark body {
+    background-color: var(--color-surface-dark);
+    color: var(--color-text-primary-dark);
+  }
+
+  ::selection {
+    background-color: var(--color-terracotta);
+    color: white;
+  }
+}
+
+/* ——————————————————————————————————————————
+   Custom utilities that Tailwind can't cover
+   —————————————————————————————————————————— */
+
+/* Subtle underline animation for links */
+.link-underline {
+  position: relative;
+  display: inline-block;
+}
+
+.link-underline::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background-color: var(--color-terracotta);
+  transition: width 0.3s ease;
+}
+
+.link-underline:hover::after {
+  width: 100%;
+}
+
+/* Focus visible ring for keyboard users */
+*:focus-visible {
+  outline: 2px solid var(--color-terracotta);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+/* Timeline connector line */
+.timeline-line {
+  position: relative;
+}
+
+.timeline-line::before {
+  content: '';
+  position: absolute;
+  left: 7px;
+  top: 28px;
+  bottom: 0;
+  width: 2px;
+  background-color: var(--color-border-light);
+}
+
+.dark .timeline-line::before {
+  background-color: var(--color-border-dark);
+}
+
+/* Stagger entrance animations */
+@keyframes fadeSlideUp {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-up {
+  animation: fadeSlideUp 0.6s ease forwards;
+  opacity: 0;
+}
+
+.animation-delay-100 { animation-delay: 0.1s; }
+.animation-delay-200 { animation-delay: 0.2s; }
+.animation-delay-300 { animation-delay: 0.3s; }
+.animation-delay-400 { animation-delay: 0.4s; }
+.animation-delay-500 { animation-delay: 0.5s; }

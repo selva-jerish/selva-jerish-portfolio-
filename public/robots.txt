@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://selvajerish.vercel.app/sitemap.xml
