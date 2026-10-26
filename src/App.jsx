@@ -9,7 +9,7 @@ import Footer from './components/Footer'
 import AeroShards from './components/AeroShards'
 
 function App() {
-  // Always dark — this is a space-dark themed portfolio
+  // Always dark — this is a space-dark themed portfolio not yet 
   const [darkMode] = useState(true)
   const [hasGpuError, setHasGpuError] = useState(false)
 
